@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var autoPrefixer = require('gulp-autoprefixer');
+var babel = require('gulp-babel');
 
 
 gulp.task('sass:dev', function () {
@@ -30,7 +31,15 @@ gulp.task('html:dev', function(){
 });
 
 
+gulp.task('js:dev', function(){
+  return gulp.src('./src/js/*.js')
+    .pipe(babel({presets: ['env']}))
+    .pipe(gulp.dest('./dev'));
+});
+
+
 gulp.task('watch:dev', function () {
   gulp.watch('./src/sass/*.scss', ['sass:dev']);
   gulp.watch('./src/index.html', ['html:dev']);
+  gulp.watch('./src/js/*.js', ['js:dev']);
 });
