@@ -44,7 +44,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       value: function parseValue(value) {
         var mentionExp = /\@([a-zA-Z0-9_-]*)\W/g;
         var emoticonExp = /\(([a-zA-Z0-9]*)\)/g;
-        var urlExp = / /;
+        var urlExp = /(https?:\/\/[^\s]+)/g;
         var result = void 0;
 
         // Loop through any results that match the mentions regex
@@ -58,6 +58,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           if (result[1].length <= this.EMOTICON_LIMIT) {
             this.results.emoticons.push(result[1]);
           }
+        }
+
+        while ((result = urlExp.exec(value)) !== null) {
+          console.log('result', result);
+          this.results.links.push(result[1]);
         }
       }
     }]);

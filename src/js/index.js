@@ -34,7 +34,7 @@
     parseValue(value){
       let mentionExp = /\@([a-zA-Z0-9_-]*)\W/g;
       let emoticonExp = /\(([a-zA-Z0-9]*)\)/g;
-      let urlExp = / /;
+      let urlExp = /(https?:\/\/[^\s]+)/g;
       let result;
 
       // Loop through any results that match the mentions regex
@@ -48,6 +48,11 @@
         if(result[1].length <= this.EMOTICON_LIMIT){
           this.results.emoticons.push(result[1]);
         }
+      }
+
+      while( (result = urlExp.exec(value)) !== null ){
+        console.log('result', result);
+        this.results.links.push(result[1]);
       }
 
     };
