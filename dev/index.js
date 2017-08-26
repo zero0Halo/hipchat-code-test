@@ -12,7 +12,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       this.el = el;
       this.input = el.querySelector('input[type=text]');
       this.button = el.querySelector('button');
-      this.output = el.querySelector('.output');
+      this.output = el.querySelector('.output pre');
+      this.EMOTICON_LIMIT = 15;
+      this.results = {
+        mentions: [],
+        emoticons: [],
+        links: []
+      };
 
       this.attachEvents();
     }
@@ -23,16 +29,36 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var _this = this;
 
         this.button.addEventListener('click', function (e) {
+          var value = _this.input.value;
 
-          console.log(_this.input.value);
+
+          if (value.length > 0) {
+            _this.parseValue(value);
+          }
+
+          _this.output.innerText = JSON.stringify(_this.results, null, '\t');
         });
       }
     }, {
       key: 'parseValue',
-      value: function parseValue() {
-        var mentionExp = / /;
-        var emoticonExp = / /;
+      value: function parseValue(value) {
+        var mentionExp = /\@([a-zA-Z0-9_-]*)\W/g;
+        var emoticonExp = /\(([a-zA-Z0-9]*)\)/g;
         var urlExp = / /;
+        var result = void 0;
+
+        // Loop through any results that match the mentions regex
+        while ((result = mentionExp.exec(value)) !== null) {
+          this.results.mentions.push(result[1]);
+        }
+
+        // Loop through any results that match the emoticons regex
+        while ((result = emoticonExp.exec(value)) !== null) {
+          // Emoticons of only a certain length are allowed
+          if (result[1].length <= this.EMOTICON_LIMIT) {
+            this.results.emoticons.push(result[1]);
+          }
+        }
       }
     }]);
 
