@@ -1,0 +1,34 @@
+{
+  "name": "hipchat-code-test",
+  "version": "1.0.0",
+  "description": "Code test for the Hipchat team",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zero0Halo/hipchat-code-test.git"
+  },
+  "keywords": [
+    "chat",
+    "atlassian"
+  ],
+  "author": "Steve Swanson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zero0Halo/hipchat-code-test/issues"
+  },
+  "homepage": "https://github.com/zero0Halo/hipchat-code-test#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "bootstrap": "^4.0.0-beta",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-clean-css": "^3.7.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.1",
+    "jquery": "^3.2.1",
+    "popper.js": "^1.12.3"
+  }
+}
