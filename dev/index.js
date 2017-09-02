@@ -65,7 +65,7 @@ var $ = require('jquery');
         while ((result = urlExp.exec(value)) !== null) {
           $.post({
             url: this.WEBTASK,
-            data: result[1],
+            data: { url: result[1] },
             success: function success(data) {
               console.log(data);
             }
