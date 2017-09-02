@@ -6,6 +6,10 @@ var sourcemaps = require('gulp-sourcemaps');
 var autoPrefixer = require('gulp-autoprefixer');
 var babel = require('gulp-babel');
 var connect = require('gulp-connect');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var sequence = require('run-sequence');
 
 
 gulp.task('sass:dev', function () {
@@ -42,6 +46,23 @@ gulp.task('js:dev', function(){
 });
 
 
+gulp.task('browserify:dev', function() {
+  var BUNDLE = 'index-bundle.js';
+  var SRC = './dev/index.js';
+  var DEST = './dev'
+
+  const B = browserify({
+    entries: SRC,
+    debug: true
+  });
+
+  return B.bundle()
+    .pipe(source(BUNDLE))
+    .pipe(buffer())
+    .pipe(gulp.dest(DEST));
+});
+
+
 gulp.task('connect', function() {
   connect.server({
     root: 'dev',
@@ -53,5 +74,7 @@ gulp.task('connect', function() {
 gulp.task('watch:dev', ['connect'], function () {
   gulp.watch('./src/sass/*.scss', ['sass:dev']);
   gulp.watch('./src/index.html', ['html:dev']);
-  gulp.watch('./src/js/*.js', ['js:dev']);
+  gulp.watch('./src/js/*.js', function(){
+    sequence('js:dev', 'browserify:dev');
+  });
 });
