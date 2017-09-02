@@ -64,4 +64,3 @@
   let hipChatter = new HipChatter(chatterEl);
 
 })();
-
