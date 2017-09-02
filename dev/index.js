@@ -7,6 +7,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
   var HipChatter = function () {
     function HipChatter(el) {
+      var _this = this;
+
       _classCallCheck(this, HipChatter);
 
       this.el = el;
@@ -20,35 +22,34 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         links: []
       };
 
-      this.attachEvents();
+      this.button.addEventListener('click', function (e) {
+        _this.textSubmit();
+      });
     }
 
     _createClass(HipChatter, [{
-      key: 'attachEvents',
-      value: function attachEvents() {
-        var _this = this;
-
-        this.button.addEventListener('click', function (e) {
-          var value = _this.input.value;
+      key: 'textSubmit',
+      value: function textSubmit() {
+        var value = this.input.value;
 
 
-          if (value.length > 0) {
-            _this.parseValue(value);
-          }
+        if (value.length > 0) {
+          this.parseValue(value);
+        }
 
-          _this.output.innerText = JSON.stringify(_this.results, null, '\t');
-        });
+        this.output.innerText = JSON.stringify(this.results, null, '\t');
       }
     }, {
       key: 'parseValue',
       value: function parseValue(value) {
-        var mentionExp = /\@([a-zA-Z0-9_-]*)\W/g;
+        var mentionExp = /\@([a-zA-Z0-9_-]*)/g;
         var emoticonExp = /\(([a-zA-Z0-9]*)\)/g;
         var urlExp = /(https?:\/\/[^\s]+)/g;
         var result = void 0;
 
         // Loop through any results that match the mentions regex
         while ((result = mentionExp.exec(value)) !== null) {
+          console.log(result);
           this.results.mentions.push(result[1]);
         }
 

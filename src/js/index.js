@@ -13,32 +13,29 @@
         links: []
       };
 
-      this.attachEvents();
+      this.button.addEventListener('click', e => { this.textSubmit(); });
     }
 
 
-    attachEvents(){
-      this.button.addEventListener('click', e => {
-        var {value} = this.input;
+    textSubmit(){
+      var {value} = this.input;
 
-        if(value.length > 0){
-          this.parseValue(value);
-        }
+      if(value.length > 0){
+        this.parseValue(value);
+      }
 
-        this.output.innerText = JSON.stringify(this.results, null, '\t');
-
-      });
+      this.output.innerText = JSON.stringify(this.results, null, '\t');
     };
 
 
     parseValue(value){
-      let mentionExp = /\@([a-zA-Z0-9_-]*)\W/g;
+      let mentionExp = /\@([a-zA-Z0-9_-]*)/g;
       let emoticonExp = /\(([a-zA-Z0-9]*)\)/g;
       let urlExp = /(https?:\/\/[^\s]+)/g;
       let result;
 
       // Loop through any results that match the mentions regex
-      while( (result = mentionExp.exec(value)) !== null ){
+      while( (result = mentionExp.exec(value)) !== null ){ console.log(result);
         this.results.mentions.push(result[1]);
       }
 
