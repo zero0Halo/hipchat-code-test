@@ -4,6 +4,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var $ = require('jquery');
+
 (function () {
   var HipChatter = function () {
     function HipChatter(el) {
@@ -16,6 +18,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       this.button = el.querySelector('button');
       this.output = el.querySelector('.output pre');
       this.EMOTICON_LIMIT = 15;
+      this.WEBTASK = 'https://wt-7abb8e587f67c0479d2721fbbd244dba-0.run.webtask.io/getTitle';
       this.results = {
         mentions: [],
         emoticons: [],
@@ -35,9 +38,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         if (value.length > 0) {
           this.parseValue(value);
+          this.output.innerText = JSON.stringify(this.results, null, '\t');
         }
-
-        this.output.innerText = JSON.stringify(this.results, null, '\t');
       }
     }, {
       key: 'parseValue',
@@ -49,7 +51,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         // Loop through any results that match the mentions regex
         while ((result = mentionExp.exec(value)) !== null) {
-          console.log(result);
           this.results.mentions.push(result[1]);
         }
 
@@ -62,8 +63,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
 
         while ((result = urlExp.exec(value)) !== null) {
-          console.log('result', result);
-          this.results.links.push(result[1]);
+          $.post({
+            url: this.WEBTASK,
+            data: result[1],
+            success: function success(data) {
+              console.log(data);
+            }
+          });
+
+          console.log(result[1]);
+
+          // this.results.links.push(result[1]);
         }
       }
     }]);
