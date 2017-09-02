@@ -1,4 +1,5 @@
 let $ = require('jquery');
+require("babel-polyfill");
 
 (()=>{
 
@@ -30,11 +31,20 @@ let $ = require('jquery');
     };
 
 
-    parseValue(value){
+    async parseValue(value){
       let mentionExp = /\@([a-zA-Z0-9_-]*)/g;
       let emoticonExp = /\(([a-zA-Z0-9]*)\)/g;
       let urlExp = /(https?:\/\/[^\s]+)/g;
       let result;
+
+      let getTitle = url => {
+        return $.post({
+          url: this.WEBTASK,
+          data: { url: result[1] },
+        }).then( data => {
+          return data;
+        });
+      };
 
       // Loop through any results that match the mentions regex
       while( (result = mentionExp.exec(value)) !== null ){
@@ -50,17 +60,7 @@ let $ = require('jquery');
       }
 
       while( (result = urlExp.exec(value)) !== null ){
-        $.post({
-          url: this.WEBTASK,
-          data: { url: result[1] },
-          success: data => {
-            console.log(data);
-          }
-        });
-
-        console.log(result[1]);
-
-        // this.results.links.push(result[1]);
+        console.log( await getTitle(result[1]) );
       }
 
     };

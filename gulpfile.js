@@ -40,7 +40,7 @@ gulp.task('html:dev', function(){
 
 gulp.task('js:dev', function(){
   return gulp.src('./src/js/*.js')
-    .pipe(babel({presets: ['env']}))
+    .pipe(babel())
     .pipe(gulp.dest('./dev'))
     .pipe(connect.reload());
 });
