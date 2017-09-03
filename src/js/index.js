@@ -135,10 +135,17 @@ let $ = require('jquery');
   };
 
 
+  window.HipChatter = HipChatter;
+
+
   // The element to which I will apply this HipChatter class to
-  let chatterEl = document.querySelector('.chatter');
+  let chatterEl = document.querySelector('.chatter') || false;
+  let hipChatter;
 
   // Instantiating an instance of HipChatter with the above dom element
-  let hipChatter = new HipChatter(chatterEl);
+  if(chatterEl){
+    hipChatter = new HipChatter(chatterEl);
+  }
+
 
 })();

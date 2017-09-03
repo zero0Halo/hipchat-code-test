@@ -63,7 +63,7 @@ gulp.task('browserify:dev', ['js:dev'], function() {
 });
 
 
-gulp.task('connect', function() {
+gulp.task('connect:dev', function() {
   connect.server({
     root: 'dev',
     livereload: true
@@ -71,8 +71,23 @@ gulp.task('connect', function() {
 });
 
 
-gulp.task('watch:dev', ['connect', 'html:dev', 'sass:dev', 'browserify:dev'], function () {
+gulp.task('watch:dev', ['connect:dev', 'html:dev', 'sass:dev', 'browserify:dev'], function () {
   gulp.watch('./src/sass/*.scss', ['sass:dev']);
   gulp.watch('./src/index.html', ['html:dev']);
   gulp.watch('./src/js/*.js', ['browserify:dev']);
+});
+
+
+gulp.task('connect:test', function() {
+  connect.server({
+    root: 'testing'
+  });
+});
+
+gulp.task('test', ['connect:test', 'browserify:dev'], function(){
+  var SRC = 'dev/index-bundle.js';
+  var DEST = 'testing/dev/';
+
+  gulp.src(SRC)
+    .pipe(gulp.dest(DEST));
 });
