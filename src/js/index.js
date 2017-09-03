@@ -80,6 +80,15 @@ let $ = require('jquery');
             // There could be multiple urls/promises, so have to wait for them to all be resolved.
             // Once done, assign the result of the promises to the results and resolve.
             Promise.all(promises).then( values => {
+
+              // It's possible that an invalid url was given.
+              // The project wasn't specific as to what should happen in this case, so I went ahead and noted some error detection.
+              values.map( v => {
+                if(v.hasOwnProperty('error')) {
+                  console.error('There was an error with a url submitted to getTitle: ', v.error);
+                }
+              });
+
               this.results.links = values;
               resolve();
             });

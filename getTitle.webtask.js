@@ -4,19 +4,21 @@ var getTitle = function(context, cb){
   var titleExp = /<title\>(.*)<\/title>/;
   var url = context.body.url || false;
   var title = false;
+  var returnObj = {
+    title: '',
+    url
+  };
 
   if(url){
     request.get(url, {}, function(err, res, body){
       try {
-        title = titleExp.exec(res.body)[1];
+        returnObj.title = titleExp.exec(res.body)[1];
       } catch(err){
-        title = 'err';
+        returnObj.title = 'Invalid URL';
+        returnObj.error = err.message;
       }
 
-      cb(null, {
-        title: title,
-        url: url
-      });
+      cb(null, returnObj);
     });
   }
 
