@@ -18,7 +18,7 @@ var $ = require('jquery');
       this.button = el.querySelector('button');
       this.output = el.querySelector('.output pre');
       this.EMOTICON_LIMIT = 15;
-      this.WEBTASK = 'https://wt-7abb8e587f67c0479d2721fbbd244dba-0.run.webtask.io/_getTitle';
+      this.WEBTASK = 'https://wt-7abb8e587f67c0479d2721fbbd244dba-0.run.webtask.io/getTitle';
       this.results = false;
 
       this.button.addEventListener('click', function (e) {

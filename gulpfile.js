@@ -71,7 +71,7 @@ gulp.task('connect', function() {
 });
 
 
-gulp.task('watch:dev', ['connect', 'sass:dev', 'browserify:dev'], function () {
+gulp.task('watch:dev', ['connect', 'html:dev', 'sass:dev', 'browserify:dev'], function () {
   gulp.watch('./src/sass/*.scss', ['sass:dev']);
   gulp.watch('./src/index.html', ['html:dev']);
   gulp.watch('./src/js/*.js', ['browserify:dev']);
