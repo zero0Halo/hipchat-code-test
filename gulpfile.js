@@ -41,12 +41,11 @@ gulp.task('html:dev', function(){
 gulp.task('js:dev', function(){
   return gulp.src('./src/js/*.js')
     .pipe(babel())
-    .pipe(gulp.dest('./dev'))
-    .pipe(connect.reload());
+    .pipe(gulp.dest('./dev'));
 });
 
 
-gulp.task('browserify:dev', function() {
+gulp.task('browserify:dev', ['js:dev'], function() {
   var BUNDLE = 'index-bundle.js';
   var SRC = './dev/index.js';
   var DEST = './dev'
@@ -59,7 +58,8 @@ gulp.task('browserify:dev', function() {
   return B.bundle()
     .pipe(source(BUNDLE))
     .pipe(buffer())
-    .pipe(gulp.dest(DEST));
+    .pipe(gulp.dest(DEST))
+    .pipe(connect.reload())
 });
 
 
@@ -71,10 +71,8 @@ gulp.task('connect', function() {
 });
 
 
-gulp.task('watch:dev', ['connect'], function () {
+gulp.task('watch:dev', ['connect', 'sass:dev', 'browserify:dev'], function () {
   gulp.watch('./src/sass/*.scss', ['sass:dev']);
   gulp.watch('./src/index.html', ['html:dev']);
-  gulp.watch('./src/js/*.js', function(){
-    sequence('js:dev', 'browserify:dev');
-  });
+  gulp.watch('./src/js/*.js', ['browserify:dev']);
 });

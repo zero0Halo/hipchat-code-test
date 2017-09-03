@@ -1,5 +1,4 @@
 let $ = require('jquery');
-require("babel-polyfill");
 
 (()=>{
 
@@ -10,41 +9,34 @@ require("babel-polyfill");
       this.button = el.querySelector('button');
       this.output = el.querySelector('.output pre');
       this.EMOTICON_LIMIT = 15;
-      this.WEBTASK = 'https://wt-7abb8e587f67c0479d2721fbbd244dba-0.run.webtask.io/getTitle';
-      this.results = {
-        mentions: [],
-        emoticons: [],
-        links: []
-      };
+      this.WEBTASK = 'https://wt-7abb8e587f67c0479d2721fbbd244dba-0.run.webtask.io/_getTitle';
+      this.results = false;
 
       this.button.addEventListener('click', e => { this.textSubmit(); });
     }
+
+
 
 
     textSubmit(){
       var {value} = this.input;
 
       if(value.length > 0){
-        this.parseValue(value);
-        this.output.innerText = JSON.stringify(this.results, null, '\t');
+        this.results = this._resultConstructor();
+
+        this.parseValue(value).then( () =>{
+          this.output.innerText = JSON.stringify(this.results, null, '  ');
+        });
       }
     };
 
 
-    async parseValue(value){
+    parseValue(value){
       let mentionExp = /\@([a-zA-Z0-9_-]*)/g;
       let emoticonExp = /\(([a-zA-Z0-9]*)\)/g;
       let urlExp = /(https?:\/\/[^\s]+)/g;
+      let promises = [];
       let result;
-
-      let getTitle = url => {
-        return $.post({
-          url: this.WEBTASK,
-          data: { url: result[1] },
-        }).then( data => {
-          return data;
-        });
-      };
 
       // Loop through any results that match the mentions regex
       while( (result = mentionExp.exec(value)) !== null ){
@@ -60,13 +52,48 @@ require("babel-polyfill");
       }
 
       while( (result = urlExp.exec(value)) !== null ){
-        console.log( await getTitle(result[1]) );
+        promises.push( this._getTitle(result[1]) );
       }
+
+      return new Promise( (resolve, reject) =>{
+
+        if(promises.length > 0){
+          Promise.all(promises).then( values => {
+            this.results.links = values;
+            console.log(this.results, values);
+            resolve();
+          });
+        } else {
+          resolve();
+        }
+      });
 
     };
 
 
+    _resultConstructor() {
+      return {
+        mentions: [],
+        emoticons: [],
+        links: []
+      };
+    };
+
+
+    _getTitle(url) {
+      return new Promise( (resolve, reject) => {
+        $.post({
+          url: this.WEBTASK,
+          data: { url },
+        }).then( data => {
+          resolve(data);
+        });
+      });
+    };
+
+
   };
+
 
   let chatterEl = document.querySelector('.chatter');
   let hipChatter = new HipChatter(chatterEl);
