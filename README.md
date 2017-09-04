@@ -8,9 +8,11 @@ Clone the repo, then from the terminal run `npm install`. The project uses gulp 
 
 * `gulp dist`: Prepares the project for distribution. The CSS and JS files are minified, and do not include sourcemaps. The rendered files can be found in the `dist` folder.
 
-* `gulp test`: Uses [QUnit](http://qunitjs.com) to run several tests against the compiled and bundled `index-bundle.js` file. Note that running this does not execute the tests, you'll have to go to the url noted below for that to happen.
+* `gulp test`: Uses [QUnit](http://qunitjs.com) to run several tests against the compiled and bundled `index-bundle.js` file. Note that running this does not execute the tests, you'll have to go to the url noted below for that to happen. The files for running the tests can be found in the `testing` folder.
 
 With all options, go to `http://localhost:8080` to view the output.
+
+The original source code for the project can be found in the `src` folder. There is also a webtask that was used; more on that can be found below.
 
 ## Libraries/Tech of note
 
@@ -20,4 +22,4 @@ With all options, go to `http://localhost:8080` to view the output.
 
 * **webtask.io**: I recently had the opportunity to start using webtasks, and I find them very useful. In this case, I wrote a webtask that would return the title of a page based on a given URL. I included the code for [the task](https://github.com/zero0Halo/hipchat-code-test/blob/master/getTitle.webtask.js) in this repo.
 
-* **QUnit**: There are quite a few test suites available right now, but I find QUnit's approach the most 'JavaScript-y'. I especially appreciate that its tests are run from the browser, and since this isn't a backend-heavy project, I opted to go with something that leaned more towards a frontend implementation. 
+* **QUnit**: There are quite a few test suites available right now, but I find QUnit's approach the most 'JavaScript-y'. I especially appreciate that its tests are run from the browser, and since this isn't a backend-heavy project, I opted to go with something that leaned more towards a frontend implementation.
