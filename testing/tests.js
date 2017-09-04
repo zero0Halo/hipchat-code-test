@@ -2,6 +2,7 @@
   var TEST_ELEMENT_ID = 'chatter-test';
   var TEST_ELEMENT = document.getElementById(TEST_ELEMENT_ID);
 
+  // Verify that the 3 main elements for the form to work exist
   QUnit.test('elements.exist', function(assert){
     var hipChatter = new HipChatter(TEST_ELEMENT);
 
@@ -11,6 +12,7 @@
   });
 
 
+  // Checks to see that nothing happens when no value is in the text input area the first time
   QUnit.test('no.input', function(assert){
     var hipChatter = new HipChatter(TEST_ELEMENT);
 
@@ -20,6 +22,7 @@
   });
 
 
+  // Makes sure that multiple mentions are recorded
   QUnit.test('multiple.mentions', function(assert){
     var hipChatter = new HipChatter(TEST_ELEMENT);
 
@@ -31,6 +34,7 @@
   });
 
 
+  // Verifies that multiple emoticons can be detected, and that they are only recorded if under the default limit
   QUnit.test('emoticons.and.length', function(assert){
     var hipChatter = new HipChatter(TEST_ELEMENT);
 
@@ -42,6 +46,7 @@
   });
 
 
+  // Checks that the async call to getTitle works, and that there are no errors returned from a known valid address
   QUnit.test('async.url', function(assert){
     var hipChatter = new HipChatter(TEST_ELEMENT);
     var done = assert.async();
