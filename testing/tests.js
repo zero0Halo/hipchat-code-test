@@ -2,13 +2,14 @@
   var TEST_ELEMENT_ID = 'chatter-test';
   var TEST_ELEMENT = document.getElementById(TEST_ELEMENT_ID);
 
-  // Verify that the 3 main elements for the form to work exist
+  // Verify that the 4 main dom elements for the form to work exist
   QUnit.test('elements.exist', function(assert){
     var hipChatter = new HipChatter(TEST_ELEMENT);
 
     assert.ok(hipChatter.input, !false);
     assert.ok(hipChatter.output, !false);
     assert.ok(hipChatter.button, !false);
+    assert.ok(hipChatter.loading, !false);
   });
 
 
@@ -57,6 +58,7 @@
 
     promise.then( function(){
       assert.equal(hipChatter.results.links[0].hasOwnProperty('error'), false);
+      assert.equal(hipChatter.results.links[0].url, 'http://www.cnn.com');
       done();
     });
 

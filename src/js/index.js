@@ -1,13 +1,14 @@
-let $ = require('jquery');
+const $ = require('jquery');
 
 (()=>{
 
   class HipChatter {
     constructor(el){
       this.el = el;
-      this.input = el.querySelector('input[type=text]');
-      this.button = el.querySelector('button');
-      this.output = el.querySelector('.output pre');
+      this.input = this.el.querySelector('input[type=text]');
+      this.button = this.el.querySelector('button');
+      this.output = this.el.querySelector('.output pre');
+      this.loading = this.el.querySelector('.load-overlay')
       this.EMOTICON_LIMIT = 15;
       this.WEBTASK = 'https://wt-7abb8e587f67c0479d2721fbbd244dba-0.run.webtask.io/getTitle';
       this.MENTION_EXPR = /\@([a-zA-Z0-9_-]*)/g;
@@ -24,7 +25,7 @@ let $ = require('jquery');
      * [textSubmit Submits user text for value parsing and assigning results]
      */
       textSubmit(){
-        var {value} = this.input;
+        const {value} = this.input;
 
         // Make sure there is something in the input field
         if(value.length > 0){
@@ -77,6 +78,9 @@ let $ = require('jquery');
         return new Promise( (resolve, reject) =>{
           if(promises.length > 0){
 
+            // Show the loading spinner since it'll take a second or two to get the respone(s)
+            this.loading.classList.add('active');
+
             // There could be multiple urls/promises, so have to wait for them to all be resolved.
             // Once done, assign the result of the promises to the results and resolve.
             Promise.all(promises).then( values => {
@@ -90,6 +94,7 @@ let $ = require('jquery');
               });
 
               this.results.links = values;
+              this.loading.classList.remove('active');
               resolve();
             });
           } else {
@@ -135,8 +140,11 @@ let $ = require('jquery');
   };
 
 
-  window.HipChatter = HipChatter;
 
+  // Only want to assign HipChatter to the window once
+  if(!window.HipChatter){
+    window.HipChatter = HipChatter;
+  }
 
   // The element to which I will apply this HipChatter class to
   let chatterEl = document.querySelector('.chatter') || false;
