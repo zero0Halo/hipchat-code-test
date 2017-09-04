@@ -81,9 +81,9 @@ var TESTING = './testing';
 
     // The default task is to run the project in development mode
     gulp.task('default', ['dev:connect', 'dev:html', 'dev:sass', 'dev:browserify'], function () {
-      gulp.watch('./src/sass/*.scss', ['sass:dev']);
-      gulp.watch('./src/index.html', ['html:dev']);
-      gulp.watch('./src/js/*.js', ['browserify:dev']);
+      gulp.watch('./src/sass/*.scss', ['dev:sass']);
+      gulp.watch('./src/index.html', ['dev:sass']);
+      gulp.watch('./src/js/*.js', ['dev:browserify']);
     });
 
 
