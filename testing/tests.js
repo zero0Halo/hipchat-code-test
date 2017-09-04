@@ -42,4 +42,21 @@
   });
 
 
+  QUnit.test('async.url', function(assert){
+    var hipChatter = new HipChatter(TEST_ELEMENT);
+    var done = assert.async();
+    var promise;
+
+    hipChatter.results = hipChatter._resultConstructor();
+    promise = hipChatter.parseValue('Hello @bob and @dave! Have you been to http://www.cnn.com before?');
+
+    promise.then( function(){
+      assert.equal(hipChatter.results.links[0].hasOwnProperty('error'), false);
+      done();
+    });
+
+
+  });
+
+
 })();
